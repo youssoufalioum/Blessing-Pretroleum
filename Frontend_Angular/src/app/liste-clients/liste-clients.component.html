@@ -1,0 +1,103 @@
+<div class="container-fluid marginTop">
+    <div class="row justify-content-between">
+      <div class="col-12 col-md-9">
+        <h3 class="mb-4">Liste des Clients</h3>
+        <table datatable [dtOptions]="dtOptions" *ngIf="clients" class="row-border hover table">
+            <thead class="table-dark">
+              <tr>
+                <th>ID</th>
+                <th>Nom</th>
+                <th>Prenom</th>
+                <th>Telephone</th>
+                <th>Email</th>
+                <th>N. CNI</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let client of clients._embedded.clients">
+                <td>{{ client.id }}</td>
+                <td>{{ client.nom }}</td>
+                <td>{{ client.prenom }}</td>
+                <td>{{ client.telephone }}</td>
+                <td>{{ client.email }}</td>
+                <td>{{ client.numero_cni }}</td>
+                <div class="btn-group">
+                <button type="button" class="btn btn-outline-danger btn-sm" onclick="return confirm('êtes-vous sûre de vouloir supprimer?')" (click)="onDeleteClient(client.id)">Supprimer</button>
+                <button type="button" class="btn btn-outline-primary btn-sm" (click)="modifierClient(client)" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Modifier</button>
+                <button type="button" class="btn btn-outline-info btn-sm" (click)="onViewMore(client.id)">Voir Plus</button>
+                </div>
+              </tr>
+            </tbody>
+          </table>
+      </div>
+      <div class="col-auto col-md-3 formulaire">
+        <h2 class="text-center">Créer un Compte Client</h2>
+        <form (ngSubmit)="onSubmit(f)" #f="ngForm">
+            <div class="mb-3">
+                <label for="nom" class="form-label">Nom</label>
+                <input type="text" class="form-control" id="nom" name="nom" aria-describedby="emailHelp" ngModel required>
+            </div>
+              <div class="mb-3">
+                <label for="prenom" class="form-label">Prénom</label>
+                <input type="text" class="form-control" id="prenom" name="prenom" aria-describedby="emailHelp" ngModel required>
+              </div>
+              <div class="mb-3">
+                <label for="telephone" class="form-label">Téléphone</label>
+                <input type="tel" class="form-control" id="telephone" name="telephone" aria-describedby="emailHelp" ngModel required>
+              </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" ngModel required>
+            </div>
+            <div class="mb-3">
+              <label for="numero_cni" class="form-label">Numero CNI</label>
+              <input type="text" class="form-control" id="numero_cni" name="numero_cni" ngModel required>
+            </div>
+            <button type="submit" class="btn btn-primary" [disabled]="f.invalid">Créer Compte</button>
+          </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modifier Client</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="formModifier" #fModal="ngForm">
+            <div class="mb-3">
+              <label for="id" class="form-label">ID</label>
+              <input type="number" class="form-control" formControlName="id" id="id" name="id" aria-describedby="emailHelp" ngModel required readonly>
+            </div>
+            <div class="mb-3">
+                <label for="nom" class="form-label">Nom</label>
+                <input type="text" class="form-control" formControlName="nom" id="nom" name="nom" aria-describedby="emailHelp" ngModel required>
+            </div>
+              <div class="mb-3">
+                <label for="prenom" class="form-label">Prénom</label>
+                <input type="text" class="form-control" formControlName="prenom" id="prenom" name="prenom" aria-describedby="emailHelp" ngModel required>
+              </div>
+              <div class="mb-3">
+                <label for="telephone" class="form-label">Téléphone</label>
+                <input type="tel" class="form-control" formControlName="telephone" id="telephone" name="telephone" aria-describedby="emailHelp" ngModel required>
+              </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input type="email" class="form-control" formControlName="email" id="email" name="email" aria-describedby="emailHelp" ngModel required>
+            </div>
+            <div class="mb-3">
+              <label for="numero_cni" class="form-label">Numero CNI</label>
+              <input type="text" class="form-control" formControlName="numero_cni" id="numero_cni" name="numero_cni" ngModel required>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" (click)="onModifier()" [disabled]="fModal.invalid">Modifier</button>
+              <button type="button" id="fermer" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>

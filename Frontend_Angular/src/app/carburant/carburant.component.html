@@ -1,0 +1,72 @@
+<div class="container-fluid marginTop">
+    <div class="row justify-content-between">
+      <div class="col-12 col-md-9">
+        <h3 class="mb-4">Liste des Carburants</h3>
+        <table datatable [dtOptions]="dtOptions" *ngIf="carburants" class="row-border hover table">
+            <thead class="table-dark">
+              <tr>
+                <th>ID</th>
+                <th>Type Carburant</th>
+                <th>Prix Unitaire (en FCFA)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let carburant of carburants._embedded.carburants">
+                <td>{{ carburant.id }}</td>
+                <td>{{ carburant.typeCarburant }}</td>
+                <td>{{ carburant.prixUnitaire }}</td>
+                <div class="btn-group">
+                <button type="button" class="btn btn-outline-danger btn-sm" onclick="return confirm('êtes-vous sûre de vouloir supprimer?')" (click)="onDeleteCarburant(carburant.id)">Supprimer</button>
+                <button type="button" class="btn btn-outline-primary btn-sm" (click)="modifierCarburant(carburant)" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Modifier</button>
+                </div>
+              </tr>
+            </tbody>
+          </table>
+      </div>
+      <div class="col-6 col-md-3 formulaire">
+        <h2 class="text-center">Ajouter Carburant</h2>
+        <form (ngSubmit)="onSubmit(f)" #f="ngForm">
+            <div class="mb-3">
+                <label for="typeCarburant" class="form-label">Type de Carburant</label>
+                <input type="text" class="form-control" id="typeCarburant" name="typeCarburant" aria-describedby="emailHelp" ngModel required>
+            </div>
+              <div class="mb-3">
+                <label for="prixUnitaire" class="form-label">Prix Unitaire (FCFA)</label>
+                <input type="number" min="100" class="form-control" id="prixUnitaire" name="prixUnitaire" aria-describedby="emailHelp" ngModel required>
+              </div>
+            <button type="submit" class="btn btn-primary" [disabled]="f.invalid">Ajouter</button>
+          </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modifier Client</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="formModifier" #fModal="ngForm">
+            <div class="mb-3">
+              <label for="id" class="form-label">ID</label>
+              <input type="number" class="form-control" formControlName="id" id="id" name="id" aria-describedby="emailHelp" ngModel required readonly>
+            </div>
+            <div class="mb-3">
+                <label for="typeCarburant" class="form-label">Type de Carburant</label>
+                <input type="text" class="form-control" formControlName="typeCarburant" id="typeCarburant" name="typeCarburant" aria-describedby="emailHelp" ngModel required>
+            </div>
+              <div class="mb-3">
+                <label for="prixUnitaire" class="form-label">Prix Unitaire</label>
+                <input type="number" class="form-control" formControlName="prixUnitaire" id="prixUnitaire" name="prixUnitaire" aria-describedby="emailHelp" ngModel required>
+              </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" (click)="onModifier()" [disabled]="fModal.invalid">Modifier</button>
+              <button type="button" id="fermer" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>

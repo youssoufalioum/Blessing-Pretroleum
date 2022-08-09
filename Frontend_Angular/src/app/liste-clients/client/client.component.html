@@ -1,0 +1,135 @@
+<div class="container-fluid marginTop">
+    <div class="row justify-content-between">
+        <div class="row">
+            <div class="col-md-8">
+                <p class="fw-bold fs-5">Numéro de Compte: {{compte.numeroCompte}}</p>
+                <p class="fw-bold fs-5">Solde: {{compte.solde | currency :'XAF ':'symbol':'1.2-2'}}</p>
+            </div>
+            <div class=" col-md-4">
+                <form class="row g-3" (ngSubmit)="onSubmitApprov(a)" #a="ngForm">
+                    <div class="col-auto">
+                      <label for="montant" class="visually-hidden">Solde</label>
+                      <input type="number" min="100" class="form-control" id="montant" name="montant" placeholder="Montant" ngModel required>
+                    </div>
+                    <div class="col-auto">
+                      <button type="submit" class="btn btn-primary mb-3" [disabled]="a.invalid">Approvisionner Compte</button>
+                    </div>
+                  </form>
+            </div>
+        </div>
+
+      <div class="col-12 col-md-9 mt-3">
+        <h3 class="mb-4">Historique de consommations</h3>
+        <table datatable [dtOptions]="dtOptions" *ngIf="consommations" class="row-border hover table">
+            <thead class="table-dark">
+              <tr>
+                <th>ID</th>
+                <th>Quantité (en litre)</th>
+                <th>Montant (en FCFA)</th>
+                <th>Mode de Paiement</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let consommation of consommations._embedded.consommations">
+                <td>{{ consommation.id }}</td>
+                <td>{{ consommation.quantite }}</td>
+                <td>{{ consommation.montant }}</td>
+                <td>{{ consommation.modePaiement }}</td>
+                <td>{{ consommation.date }}</td>
+                <div class="btn-group">
+                <button type="button" class="btn btn-outline-danger btn-sm" onclick="return confirm('êtes-vous sûre de vouloir supprimer?')" (click)="onDeleteConsommation(consommation.id)">Supprimer</button>
+                <button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo" (click)="voirPlus(consommation.id)">Voir Plus</button>
+                </div>
+              </tr>
+            </tbody>
+          </table>
+      </div>
+      <div class="col-6 col-md-3 formulaire">
+        <h2 class="text-center">Consommer Carburant</h2>
+        <form (ngSubmit)="onSubmit(f)" #f="ngForm">
+            <div class="mb-3">
+                <label for="typeCarburant" class="form-label">Type de Carburant</label>
+                <select class="form-select" id="typeCarburant" name="typeCarburant" aria-label="Type de Carburant" ngModel required>
+                    <option selected>Choisir Type de Carburant</option>
+                    <option *ngFor="let carburant of carburants._embedded.carburants" value="{{carburant.typeCarburant}}">{{carburant.typeCarburant}} - Prix: {{carburant.prixUnitaire}}</option>
+                  </select>
+            </div>
+              <div class="mb-3">
+                <label for="montant" class="form-label">Montant</label>
+                <input type="number" class="form-control" id="montant" name="montant" aria-describedby="emailHelp" ngModel required>
+              </div>
+            <div class="mb-3">
+                <label for="modePaiement" class="form-label">Mode de Paiement</label>
+                <select class="form-select" id="modePaiement" name="modePaiement" aria-label="Mode de Paiement" ngModel required>
+                    <option selected>Choisir Mode de Paiement</option>
+                    <option value="CASH">CASH</option>
+                    <option value="OM">OM</option>
+                    <option value="MOMO">MOMO</option>
+                    <option value="DIGIPAY">DIGIPAY</option>
+                    <option value="YOOMEE MONEY">YOOMEE MONEY</option>
+                  </select>
+            </div>
+            <div class="mb-3">
+                <label for="idAgence" class="form-label">Agence</label>
+                <select class="form-select" id="idAgence" name="idAgence" aria-label="agence" ngModel required>
+                    <option [selected]="true">Choisir Agence</option>
+                    <option *ngFor="let agence of agences._embedded.agences" value="{{agence.id}}">{{agence.nom}} - Ville: {{agence.ville}} - Adresse: {{agence.adresse}} - Téléphone: {{agence.telephone}}</option>
+                  </select>
+            </div>
+            <button type="submit" class="btn btn-primary" [disabled]="f.invalid">Consommer</button>
+          </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen-sm-down">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Agence & Type de Carburant</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+
+          <table class="table table-bordered border-primary" *ngIf="agenceConsommation">
+            <thead>
+              <tr>
+                <th scope="col">Nom de l'agence</th>
+                <th scope="col">Ville</th>
+                <th scope="col">Adresse</th>
+                <th scope="col">Téléphone</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{agenceConsommation.nom}}</td>
+                <td>{{agenceConsommation.ville}}</td>
+                <td>{{agenceConsommation.adresse}}</td>
+                <td>{{agenceConsommation.telephone}}</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <table class="table table-bordered border-primary mt-5" *ngIf="carburantConsommer">
+            <thead>
+              <tr>
+                <th scope="col">Type de Carburant</th>
+                <th scope="col">Prix Unitaire</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{carburantConsommer.typeCarburant}}</td>
+                <td>{{carburantConsommer.prixUnitaire | currency :'XAF ':'symbol':'1.2-2'}}</td>
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+        </div>
+      </div>
+    </div>
+  </div>
