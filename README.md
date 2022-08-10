@@ -1,2 +1,2 @@
 # Blessing Pretroleum
- Test recrutement Statge Pro de Blessing Petroleum
+ Test recrutement Stage Pro de Blessing Petroleum
