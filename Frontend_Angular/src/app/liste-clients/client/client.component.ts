@@ -2,6 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Constants } from 'src/app/contants';
 import { DataTableFrenchTranlate } from 'src/app/dataTableFrenchLanguage';
 import { Compte } from 'src/app/models/compte.model';
 import { Consommations } from 'src/app/models/consommations.model';
@@ -41,7 +42,7 @@ export class ClientComponent implements OnInit {
   }
 
   onGetConsommation(idClient:number){
-    this.httpClient.get("http://localhost:8080/blessingpetroleum/api/clients/"+idClient+"/consommation")
+    this.httpClient.get(Constants.urlBase+"/blessingpetroleum/api/clients/"+idClient+"/consommation")
     .subscribe(
       (data) => {
         this.consommations=data;
@@ -53,7 +54,7 @@ export class ClientComponent implements OnInit {
   }
 
   onGetCompte(idClient:number){
-    this.httpClient.get("http://localhost:8080/blessingpetroleum/api/clients/"+idClient+"/compte")
+    this.httpClient.get(Constants.urlBase+"/blessingpetroleum/api/clients/"+idClient+"/compte")
     .subscribe(
       data => {
         this.compte=data;
@@ -65,7 +66,7 @@ export class ClientComponent implements OnInit {
   }
 
   onGetCarburants(){
-    this.httpClient.get("http://localhost:8080/blessingpetroleum/api/carburants")
+    this.httpClient.get(Constants.urlBase+"/blessingpetroleum/api/carburants")
     .subscribe(
       data => {
         this.carburants=data;
@@ -77,7 +78,7 @@ export class ClientComponent implements OnInit {
   }
 
   onGetAgences(){
-    this.httpClient.get("http://localhost:8080/blessingpetroleum/api/agences")
+    this.httpClient.get(Constants.urlBase+"/blessingpetroleum/api/agences")
     .subscribe(
       data => {
         this.agences=data;
@@ -97,7 +98,7 @@ export class ClientComponent implements OnInit {
   .set('idAgence', form.value.idAgence)
   .set('idClient', this.idClient);
    
-    this.httpClient.post("http://localhost:8080/blessingpetroleum/api/consommerCarburant",null,{ params: params })
+    this.httpClient.post(Constants.urlBase+"/blessingpetroleum/api/consommerCarburant",null,{ params: params })
     .subscribe(
       data => {
         this.carburants=data;
@@ -121,7 +122,7 @@ export class ClientComponent implements OnInit {
     .set('idClient', this.idClient)
     .set('montant', form.value.montant)
      
-      this.httpClient.post("http://localhost:8080/blessingpetroleum/api/approvisionnerCompte",null,{ params: params })
+      this.httpClient.post(Constants.urlBase+"/blessingpetroleum/api/approvisionnerCompte",null,{ params: params })
       .subscribe(
         data => {
           this.compte=data;
@@ -135,7 +136,7 @@ export class ClientComponent implements OnInit {
     }
 
     onDeleteConsommation(idConso:number){
-      this.httpClient.delete("http://localhost:8080/blessingpetroleum/api/consommations/"+idConso)
+      this.httpClient.delete(Constants.urlBase+"/blessingpetroleum/api/consommations/"+idConso)
       .subscribe(
         data => {
           this.consommations=null;
@@ -149,7 +150,7 @@ export class ClientComponent implements OnInit {
 
     voirPlus(idConsommation:number){
 
-      this.httpClient.get("http://localhost:8080/blessingpetroleum/api/consommations/"+idConsommation+"/carburant")
+      this.httpClient.get(Constants.urlBase+"/blessingpetroleum/api/consommations/"+idConsommation+"/carburant")
     .subscribe(
       data => {
         this.carburantConsommer=data;
@@ -159,7 +160,7 @@ export class ClientComponent implements OnInit {
       }
     );
 
-    this.httpClient.get("http://localhost:8080/blessingpetroleum/api/consommations/"+idConsommation+"/agence")
+    this.httpClient.get(Constants.urlBase+"/blessingpetroleum/api/consommations/"+idConsommation+"/agence")
     .subscribe(
       data => {
         this.agenceConsommation=data;

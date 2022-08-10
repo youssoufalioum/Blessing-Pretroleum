@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { FormBuilder, FormGroup, NgForm } from '@angular/forms';
 import { DataTableFrenchTranlate } from '../dataTableFrenchLanguage';
 import { Router } from '@angular/router';
+import { Constants } from '../contants';
 
 @Component({
   selector: 'app-liste-clients',
@@ -36,7 +37,7 @@ export class ListeClientsComponent implements OnInit {
   }
 
   onGetClients(){
-    this.httpClient.get("http://localhost:8080/blessingpetroleum/api/clients")
+    this.httpClient.get(Constants.urlBase+"/blessingpetroleum/api/clients")
     .subscribe(
       data => {
         this.clients=data;
@@ -58,7 +59,7 @@ export class ListeClientsComponent implements OnInit {
        numero_cni: form.value.numero_cni
      };
 
-    this.httpClient.post("http://localhost:8080/blessingpetroleum/api/creerCompte",body)
+    this.httpClient.post(Constants.urlBase+"/blessingpetroleum/api/creerCompte",body)
     .subscribe(
       data => {
         //this.clients=data;
@@ -75,7 +76,7 @@ export class ListeClientsComponent implements OnInit {
   }
 
   onDeleteClient(idClient:any){
-    this.httpClient.delete("http://localhost:8080/blessingpetroleum/api/clients/"+idClient)
+    this.httpClient.delete(Constants.urlBase+"/blessingpetroleum/api/clients/"+idClient)
     .subscribe(
       data => {
         //this.clients=data;
@@ -114,7 +115,7 @@ export class ListeClientsComponent implements OnInit {
       numero_cni: this.formModifier.value.numero_cni
     };
 
-   this.httpClient.post("http://localhost:8080/blessingpetroleum/api/clients",body)
+   this.httpClient.post(Constants.urlBase+"/blessingpetroleum/api/clients",body)
    .subscribe(
      data => {
       // this.clients=data;

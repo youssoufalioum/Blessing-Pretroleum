@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, NgForm } from '@angular/forms';
+import { Constants } from '../contants';
 import { DataTableFrenchTranlate } from '../dataTableFrenchLanguage';
 
 @Component({
@@ -31,7 +32,7 @@ export class CarburantComponent implements OnInit {
   }
 
   onGetCarburants(){
-    this.httpClient.get("http://localhost:8080/blessingpetroleum/api/carburants")
+    this.httpClient.get(Constants.urlBase+"/blessingpetroleum/api/carburants")
     .subscribe(
       data => {
         this.carburants=data;
@@ -48,7 +49,7 @@ export class CarburantComponent implements OnInit {
        prixUnitaire: form.value.prixUnitaire
      };
 
-    this.httpClient.post("http://localhost:8080/blessingpetroleum/api/carburants",body)
+    this.httpClient.post(Constants.urlBase+"/blessingpetroleum/api/carburants",body)
     .subscribe(
       data => {
         this.carburants=data;
@@ -64,7 +65,7 @@ export class CarburantComponent implements OnInit {
   }
 
   onDeleteCarburant(idCarburant:any){
-    this.httpClient.delete("http://localhost:8080/blessingpetroleum/api/carburants/"+idCarburant)
+    this.httpClient.delete(Constants.urlBase+"/blessingpetroleum/api/carburants/"+idCarburant)
     .subscribe(
       data => {
         this.carburants=data;
@@ -91,7 +92,7 @@ export class CarburantComponent implements OnInit {
       prixUnitaire: this.formModifier.value.prixUnitaire
     };
 
-   this.httpClient.post("http://localhost:8080/blessingpetroleum/api/carburants",body)
+   this.httpClient.post(Constants.urlBase+"/blessingpetroleum/api/carburants",body)
    .subscribe(
      data => {
       // this.clients=data;

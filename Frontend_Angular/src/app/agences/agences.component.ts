@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, NgForm } from '@angular/forms';
+import { Constants } from '../contants';
 import { DataTableFrenchTranlate } from '../dataTableFrenchLanguage';
 
 @Component({
@@ -33,7 +34,7 @@ export class AgencesComponent implements OnInit {
   }
 
   onGetAgences(){
-    this.httpClient.get("http://localhost:8080/blessingpetroleum/api/agences")
+    this.httpClient.get(Constants.urlBase+"/blessingpetroleum/api/agences")
     .subscribe(
       data => {
         this.agences=data;
@@ -54,7 +55,7 @@ export class AgencesComponent implements OnInit {
        telephone: form.value.telephone,
      };
 
-    this.httpClient.post("http://localhost:8080/blessingpetroleum/api/agences",body)
+    this.httpClient.post(Constants.urlBase+"/blessingpetroleum/api/agences",body)
     .subscribe(
       data => {
         this.agences=data;
@@ -69,7 +70,7 @@ export class AgencesComponent implements OnInit {
   }
 
   onDeleteAgence(idAgence:any){
-    this.httpClient.delete("http://localhost:8080/blessingpetroleum/api/agences/"+idAgence)
+    this.httpClient.delete(Constants.urlBase+"/blessingpetroleum/api/agences/"+idAgence)
     .subscribe(
       data => {
         this.agences=data;
@@ -100,7 +101,7 @@ export class AgencesComponent implements OnInit {
       telephone: this.formModifier.value.telephone
     };
 
-   this.httpClient.post("http://localhost:8080/blessingpetroleum/api/agences",body)
+   this.httpClient.post(Constants.urlBase+"/blessingpetroleum/api/agences",body)
    .subscribe(
      data => {
       // this.clients=data;
